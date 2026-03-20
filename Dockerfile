@@ -2,14 +2,13 @@ FROM ubuntu:latest AS build
 
 WORKDIR /app
 
-RUN apt-get update
-RUN apt-get install -y openjdk-21-jdk maven
+RUN apt-get update && apt-get install -y openjdk-21-jdk maven
 
 COPY . .
 
 RUN mvn clean install
 
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
