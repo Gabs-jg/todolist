@@ -1,22 +1,26 @@
-# Workshop Spring Boot com MongoDB
+# To-Do List API
 
-Este projeto é uma API RESTful desenvolvida durante um workshop para demonstrar a integração entre o framework **Spring Boot** e o banco de dados NoSQL **MongoDB**. A aplicação simula o backend de uma rede social, com funcionalidades de utilizadores, posts e comentários.
+Uma API robusta para gestão de tarefas (to-do list), focada em segurança, validação de regras de negócio e boas práticas de deploy com Docker.
 
 ## 🚀 Tecnologias
-- **Java 17**
+- **Java 21**
 - **Spring Boot 3**
-- **Spring Data MongoDB** (Persistência e Mapeamento Objeto-Documento)
-- **MongoDB** (Banco de dados orientado a documentos)
-- **Maven** (Gestão de dependências)
+- **Spring Data JPA / Hibernate**
+- **H2 Database** (Banco de dados em memória para desenvolvimento)
+- **Docker** (Containerização com multi-stage build)
+- **BCrypt** (Hashing de passwords)
 
-## 🛠️ Funcionalidades
-- **Arquitetura em Camadas:** Implementação seguindo os padrões Resource, Service e Repository.
-- **CRUD Completo:** Gestão de utilizadores (inserir, atualizar, listar e eliminar).
-- **Associações Complexas:** Uso de `@DBRef` para referências entre posts e utilizadores, e objetos aninhados (DTOs) para comentários.
-- **Consultas Personalizadas:** Pesquisas de posts por título utilizando queries personalizadas com **Regex** (case insensitive).
-- **Tratamento de Exceções:** Manipulador global de erros para respostas HTTP padronizadas.
+## 🔐 Diferenciais e Segurança
+- **Autenticação Basic Auth Customizada:** Filtro de segurança (`OncePerRequestFilter`) que valida as credenciais diretamente no banco de dados.
+- **Criptografia:** As passwords dos utilizadores são armazenadas de forma segura utilizando BCrypt.
+- **Isolamento de Dados:** Um utilizador autenticado só possui permissão para visualizar, editar ou eliminar as suas próprias tarefas.
+- **Validação de Datas:** Lógica de negócio para impedir tarefas com data de início ou término inválidas (retroativas).
+- **UUID:** Identificadores únicos universais para aumentar a segurança das URLs da API.
 
-## 🏁 Como executar
-1. Certifique-se de ter o MongoDB instalado e a correr localmente.
-2. Clone o repositório: `git clone https://github.com/Gabs-jg/workshop-spring-boot-mongodb.git`
-3. Execute o projeto via Maven ou na sua IDE favorita.
+## 📦 Dockerização
+O projeto utiliza um **Dockerfile multi-stage**, garantindo que a imagem final contenha apenas o necessário para a execução (Runtime), tornando-a leve e segura.
+
+```bash
+# Para rodar via Docker
+docker build -t todolist-app .
+docker run -p 8080:8080 todolist-app
